@@ -1,14 +1,9 @@
-library(dplyr)
-library(plyr)
-library(reshape2)
-
 # Read in activity and feature key tables
 activity <- tbl_df(read.table("./UCI HAR Dataset/activity_labels.txt", header=FALSE, col.names=c("ActCode", "Activity")))
 features <- tbl_df(read.table("./UCI HAR Dataset/features.txt", header=FALSE, col.names=c("Code", "Feature")))
-features$Feature <- sub("\\()", "", features$Feature)
-features$Feature <- gsub("-", "", features$Feature)
 features$Feature <- sub("mean", "Mean", features$Feature)
 features$Feature <- sub("std", "Std", features$Feature)
+features$Feature <- gsub("-", "", features$Feature)
 features <- mutate(features, Feature = as.character(Feature))
 
 # Read in Test files
@@ -35,7 +30,8 @@ rm(i, features, labels_test, labels_train, set_test, set_train, subject_test, su
 # Combine Test and Train data, add Activity, and select only mean and std for each variable
 df_uci <- bind_rows(df_test, df_train)
 df_uci <- right_join(activity, df_uci)
-df_uci <- select(df_uci, Activity, Subject, Group, contains('Mean'), contains('Std'))
+df_uci <- select(df_uci, Activity, Subject, Group, contains('Mean()'), contains('Std()'))
+names(df_uci) <- gsub("\\()", "", names(df_uci))
 rm(df_test, df_train, activity)
 
 # Calculate mean by Activity, Subject and Signal_Var
@@ -44,5 +40,5 @@ df_uci_summary <- df_uci %>%
                   ddply(c("Activity", "Subject", SignalVar = "variable"), summarise,
                        SignalVarMean = mean(value))
 
-df_uci
-df_uci_summary
+# Create txt file for summary data
+write.table(df_uci_summary, "uci_activity_summary.txt", row.name=FALSE)
