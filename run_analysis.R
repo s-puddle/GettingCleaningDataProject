@@ -41,8 +41,8 @@ rm(df_test, df_train, activity)
 # Calculate mean by Activity, Subject and Signal_Var
 df_uci_summary <- df_uci %>%
                   melt(id.vars=c("Activity", "Subject", "Group")) %>%
-                  ddply(c("Activity", "Subject", Signal_Var = "variable"), summarise,
-                       Signal_Var_Mean = mean(value))
+                  ddply(c("Activity", "Subject", SignalVar = "variable"), summarise,
+                       SignalVarMean = mean(value))
 
 df_uci
 df_uci_summary
