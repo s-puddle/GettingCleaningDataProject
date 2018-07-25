@@ -1,4 +1,4 @@
-"Activity" "Subject" "Signal_Var" "Signal_Var_Mean"
+"Activity" "Subject" "SignalVar" "SignalVarMean"
 "LAYING" 1 "tBodyAccMeanX" 0.22159824394
 "LAYING" 1 "tBodyAccMeanY" -0.0405139534294
 "LAYING" 1 "tBodyAccMeanZ" -0.11320355358
